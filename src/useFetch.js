@@ -13,9 +13,7 @@ export function useFetch(url) {
         .then((res) => res.json())
         .then((data) => setData(data))
         .catch((error) => {
-          if(error.name === "AbortError") {
-            console.log("Request cancelled")
-          }
+          console.log("Request cancelled")
           setError(error)
         })
         .finally(() => setLoading(false));

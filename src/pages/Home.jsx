@@ -2,8 +2,8 @@ import { useFetch } from "../useFetch"
 import { Link } from "react-router-dom"
 
 const Home = () => {
-  const { data, loading, error } = useFetch(
-    "https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json");
+  const { data, loading } = useFetch(
+    "https://api.allorigins.win/raw?url=https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json");
 
   return (
     <div className="container-fluid">
@@ -16,7 +16,6 @@ const Home = () => {
         </div>
       </div>
       <div className="row row-cols-1 row-cols-md-4 g-2">
-        {error && <div>Error: {error}</div>}
         {loading && <div>Loading...</div>}
         {data?.feed?.entry?.map((podcast) => (
           <div className="col" key={podcast.id.attributes['im:id']}>

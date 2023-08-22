@@ -7,14 +7,15 @@ import ChapterDetail from "./ChapterDetail";
 const PodcastDetail = () => {
   const { podcastId } = useParams();
   const { episodeId } = useParams();
-  const { data, loading, error } = useFetch(`https://itunes.apple.com/lookup?id=${podcastId}`);
+  const { data, loading } = useFetch(`https://api.allorigins.win/raw?url=https://itunes.apple.com/lookup?id=${podcastId}`);
 
   return (
     <div className="container-fluid">
+      {loading && <div>Loading...</div>}
       <div className="row">
         <div className="col-4">
           <div className="card m-4 p-3">
-            <img src="..." className="card-img-top" alt="..." />
+            <img src={data?.results[0].artworkUrl600} className="m-4 rounded" alt="..." />
             <div className="card-body">
               <Link className="card-title text-decoration-none fs-4 fw-bold" to={`/podcast/${podcastId}`}>
                 {data?.results[0].collectionName}
