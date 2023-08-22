@@ -9,7 +9,7 @@ const Home = () => {
     <div className="container-fluid">
       <div className="row justify-content-end my-3">
         <div className="col-auto">
-            <span className="badge rounded-pill text-bg-primary mt-2">100</span>
+            <span className="badge rounded-pill text-bg-primary mt-2">{data?.feed?.entry?.length}</span>
         </div>
         <div className="col-auto">
           <input type="search" id="search" className="form-control" placeholder="Filter podcasts..." />
@@ -27,7 +27,7 @@ const Home = () => {
                   to={`/podcast/${podcast.id.attributes['im:id']}`}>
                   {podcast['im:name'].label.toUpperCase()}
                 </Link>
-                <p className="card-text">{podcast['im:artist'].label}</p>
+                <p className="card-text">Author: {podcast['im:artist'].label}</p>
               </div>
             </div>
           </div>
