@@ -1,8 +1,8 @@
 import { useParams } from "react-router-dom"
 import { useFetchPodcast } from "../hooks/useFetch"
 import { Link } from "react-router-dom"
-import ChaptersList from "./ChaptersList";
-import ChapterDetail from "./ChapterDetail";
+import EpisodesList from "./EpisodesList";
+import EpisodeDetail from "./EpisodeDetail";
 
 const PodcastDetail = ({ podcastsData }) => {
   const { podcastId } = useParams();
@@ -36,9 +36,9 @@ const PodcastDetail = ({ podcastsData }) => {
           </div>
           <div className="col-8">
             {episodeId ? (
-              <ChapterDetail episodeId={episodeId} episodesData={episodesData} />
+              <EpisodeDetail episodeId={episodeId} episodesData={episodesData} />
             ) : (
-              <ChaptersList
+              <EpisodesList
                 podcastData={podcastData}
                 episodesData={episodesData}
                 podcastId={podcastId}

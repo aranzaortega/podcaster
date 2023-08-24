@@ -4,7 +4,7 @@ import Nav from './components/Nav'
 import Footer from "./components/Footer"
 import Home from "./pages/Home"
 import PodcastDetail from "./pages/PodcastDetail"
-import ChapterDetail from "./pages/ChapterDetail"
+import EpisodeDetail from "./pages/EpisodeDetail"
 import { useFetchPodcasts } from "./hooks/useFetch"
 
 function App() {
@@ -16,7 +16,7 @@ function App() {
       <Routes>
         <Route path="/" element={<Home podcastsData={podcastsData} />} />
         <Route path="/podcast/:podcastId" element={<PodcastDetail podcastsData={podcastsData}/>}>
-          <Route path="/podcast/:podcastId/episode/:episodeId" element={<ChapterDetail />}/>
+          <Route path="/podcast/:podcastId/episode/:episodeId" element={<EpisodeDetail />}/>
         </Route>
       </Routes>
       <Footer />
