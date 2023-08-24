@@ -1,17 +1,18 @@
 import { useState } from "react";
-import { useFetch } from "../useFetch"
 import { Link } from "react-router-dom"
 
-const Home = () => {
-  const { data, loading } = useFetch(
-    "https://api.allorigins.win/raw?url=https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json");
+const Home = ({ podcastsData }) => {
   const [query, setQuery] = useState('');
 
   return (
     <div className="container-fluid">
       <div className="row justify-content-end my-3">
         <div className="col-auto">
-            <span className="badge rounded-pill text-bg-primary mt-2">{data?.feed?.entry?.length}</span>
+            <span className="badge rounded-pill text-bg-primary mt-2">
+              {podcastsData?.feed?.entry?.filter(podcast => podcast['im:name'].label.toLowerCase().includes(query)
+                || podcast['im:artist'].label.toLowerCase().includes(query))
+                .length}
+            </span>
         </div>
         <div className="col-auto">
           <input
@@ -24,8 +25,7 @@ const Home = () => {
         </div>
       </div>
       <div className="row row-cols-1 row-cols-md-4 g-2">
-        {loading && <div>Loading...</div>}
-        {data?.feed?.entry?.filter(podcast => podcast['im:name'].label.toLowerCase().includes(query)
+        {podcastsData?.feed?.entry?.filter(podcast => podcast['im:name'].label.toLowerCase().includes(query)
           || podcast['im:artist'].label.toLowerCase().includes(query))
           .map((podcast) => (
           <div className="col" key={podcast.id.attributes['im:id']}>

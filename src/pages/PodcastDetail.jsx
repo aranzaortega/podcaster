@@ -1,41 +1,52 @@
 import { useParams } from "react-router-dom"
-import { useFetch } from "../useFetch"
+import { useFetchPodcast } from "../hooks/useFetch"
 import { Link } from "react-router-dom"
 import ChaptersList from "./ChaptersList";
 import ChapterDetail from "./ChapterDetail";
 
-const PodcastDetail = () => {
+const PodcastDetail = ({ podcastsData }) => {
   const { podcastId } = useParams();
   const { episodeId } = useParams();
-  const { data, loading } = useFetch(`https://api.allorigins.win/raw?url=https://itunes.apple.com/lookup?id=${podcastId}`);
+  const { podcastData, podcastLoading, episodesData, episodesLoading } = useFetchPodcast(podcastId);
 
   return (
     <div className="container-fluid">
-      {loading && <div>Loading...</div>}
-      <div className="row">
-        <div className="col-4">
-          <div className="card m-4 p-3">
-            <img src={data?.results[0].artworkUrl600} className="m-4 rounded" alt="..." />
-            <div className="card-body">
-              <Link className="card-title text-decoration-none fs-4 fw-bold" to={`/podcast/${podcastId}`}>
-                {data?.results[0].collectionName}
-              </Link>
-              <p className="card-text">by {data?.results[0].artistName}</p>
-            </div>
-            <div className="card-footer">
-              <h6>Description:</h6>
-              <small className="text-body-secondary">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s</small>
+      {podcastLoading && episodesLoading ? (
+        <div className="spinner-border text-primary m-2" role="status">
+          <span className="visually-hidden">Loading...</span>
+        </div>
+      ) : (
+        <div className="row">
+          <div className="col-4">
+            <div className="card m-4 p-3">
+              <img src={podcastData?.results[0].artworkUrl600} className="m-4 rounded" alt="..." />
+              <div className="card-body">
+                <Link className="card-title text-decoration-none fs-4 fw-bold" to={`/podcast/${podcastId}`}>
+                  {podcastData?.results[0].collectionName}
+                </Link>
+                <p className="card-text">by {podcastData?.results[0].artistName}</p>
+              </div>
+              <div className="card-footer">
+                <h6>Description:</h6>
+                <small className="text-body-secondary">
+                  {podcastsData?.feed.entry.filter(podcast => podcast['im:name'].label === podcastData?.results[0].collectionName).map((podcast) => podcast.summary.label)}
+                </small>
+              </div>
             </div>
           </div>
+          <div className="col-8">
+            {episodeId ? (
+              <ChapterDetail episodeId={episodeId} episodesData={episodesData} />
+            ) : (
+              <ChaptersList
+                podcastData={podcastData}
+                episodesData={episodesData}
+                podcastId={podcastId}
+              />
+            )}
+          </div>
         </div>
-        <div className="col-8">
-          {episodeId ? (
-            <ChapterDetail />
-          ) : (
-            <ChaptersList />
-          )}
-        </div>
-      </div>
+      )}
     </div>
   )
 }
