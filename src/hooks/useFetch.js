@@ -1,37 +1,40 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useContext } from 'react';
 import axios from 'axios';
 import XMLParser from 'react-xml-parser';
+import Context from '../context/Context'
 
 export function useFetchPodcasts() {
-  const [podcastsData, setPodcastsData] = useState([]);
-  const [podcastsLoading, setPodcastsLoading] = useState(true);
+  const [podcastsData, setPodcastsData] = useState([])
+  const { setLoadingPodcasts } = useContext(Context)
 
   useEffect(() => {
     const getPodcasts = async () => {
       try {
+        setLoadingPodcasts(true)
         const res = await axios.get("https://api.allorigins.win/raw?url=https://itunes.apple.com/us/rss/toppodcasts/limit=100/genre=1310/json")
-        setPodcastsData(res.data);
+        setPodcastsData(res.data)
       } catch (err){
         console.log(err)
       } finally {
-        setPodcastsLoading(false);
+        setLoadingPodcasts(false)
       }
     }
     getPodcasts();
-  }, []);
-  return { podcastsData, podcastsLoading }
+  }, [setLoadingPodcasts])
+
+  return { podcastsData }
 }
 
 export function useFetchPodcast(podcastId) {
-  const [podcastData, setPodcastData] = useState([]);
-  const [podcastLoading, setPodcastLoading] = useState(true);
-  const [episodesData, setEpisodesData] = useState([]);
-  const [episodesLoading, setEpisodesLoading] = useState(true);
-  const [errorData, setErrorData] = useState([]);
+  const [podcastData, setPodcastData] = useState([])
+  const [episodesData, setEpisodesData] = useState([])
+  const { setLoadingPodcast, setLoadingEpisodes } = useContext(Context)
 
   useEffect(() => {
     const getPodcast = async () => {
       try {
+        setLoadingPodcast(true)
+        setLoadingEpisodes(true)
         const resPodcast = await axios.get(`https://api.allorigins.win/raw?url=https://itunes.apple.com/lookup?id=${podcastId}`)
         setPodcastData(resPodcast.data)
         const resEpisodesXML = await axios.get(`https://api.allorigins.win/raw?url=${resPodcast.data.results[0].feedUrl}`)
@@ -39,13 +42,13 @@ export function useFetchPodcast(podcastId) {
         setEpisodesData(resEpisodesJSON)
       } catch (err){
         console.log(err)
-        setErrorData(err)
       } finally {
-        setPodcastLoading(false)
-        setEpisodesLoading(false)
+        setLoadingPodcast(false)
+        setLoadingEpisodes(false)
       }
     }
     getPodcast();
-  }, [podcastId]);
-  return { podcastData, podcastLoading, episodesData, episodesLoading, errorData }
+  }, [podcastId, setLoadingPodcast, setLoadingEpisodes])
+
+  return { podcastData, episodesData }
 }

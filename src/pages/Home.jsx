@@ -1,8 +1,10 @@
 import { useState } from "react";
 import { Link } from "react-router-dom"
+import { useFetchPodcasts } from "../hooks/useFetch"
 
-const Home = ({ podcastsData }) => {
-  const [query, setQuery] = useState('');
+const Home = () => {
+  const { podcastsData } = useFetchPodcasts()
+  const [query, setQuery] = useState('')
 
   return (
     <div className="container-fluid">

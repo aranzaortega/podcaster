@@ -9,8 +9,9 @@ const EpisodesList = ({ podcastData, episodesData, podcastId }) => {
 
   return (
     <div>
+      <>
       <div className="card m-4 p-3">
-        <h4>Episodes: {podcastData?.results[0].trackCount}</h4>
+        <h4>Episodes: {podcastData.results[0].trackCount}</h4>
       </div>
       <div className="card m-4 p-3">
         <div className="row">
@@ -54,6 +55,7 @@ const EpisodesList = ({ podcastData, episodesData, podcastId }) => {
           </div>
         </div>
       </div>
+      </>
     </div>
   )
 }

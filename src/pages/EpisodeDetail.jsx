@@ -1,9 +1,6 @@
 const EpisodeDetail = ({ episodesData, episodeId }) => {
   const episodes = episodesData.children[0].children.filter(
-    children => children.name === 'item');
-  console.log( episodes.map(episode => episode.children.filter(
-    children => children.name === 'description'
-    ))[0][0].value)
+    children => children.name === 'item')
 
   return (
     <div className="card m-4 p-3">
@@ -21,13 +18,13 @@ const EpisodeDetail = ({ episodesData, episodeId }) => {
       </div>
       <div dangerouslySetInnerHTML={{ __html: episodes.map(episode => episode.children.filter(
           children => children.name === 'description'
-          ))[0][0].value}}>
+          ))[0][0]?.value}}>
       </div>
       <div>
         <audio controls>
           <source src={episodes.map(episode => episode.children.filter(
             children => children.name === 'media:content'
-            ))[0][0].attributes.url}
+            ))[0][0]?.attributes.url}
           type="audio/mpeg" />
             This browser does not support the audio tag.
         </audio>
