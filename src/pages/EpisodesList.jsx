@@ -23,8 +23,8 @@ const EpisodesList = ({ podcastData, episodesData, podcastId }) => {
                 <div key={episodeTitle.value}>
                   <Link className="text-decoration-none fw-bold"
                     to={`/podcast/${podcastId}/episode/${episodeTitle.value}`}>
-                    <p>
-                      {formatTitle(episodeTitle.value)}
+                    <p dangerouslySetInnerHTML={{ __html:
+                      formatTitle(episodeTitle.value)}}>
                     </p>
                   </Link>
                 </div>
